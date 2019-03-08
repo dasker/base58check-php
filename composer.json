@@ -1,0 +1,30 @@
+{
+  "name": "cryptolabs-pk/base58check-php",
+  "description": "Base58Check Encoding lib for PHP",
+  "type": "library",
+  "homepage": "https://github.com/cryptolabs-pk/base58check-php",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Furqan A. Siddiqui",
+      "email": "hello@furqansiddiqui.com",
+      "homepage": "https://www.furqansiddiqui.com",
+      "role": "Author"
+    }
+  ],
+  "require": {
+    "php-64bit": "^7.2",
+    "ext-openssl": "*",
+    "ext-bcmath": "*",
+    "cryptolabs-pk/bcmath-php": "^0.1.2",
+    "cryptolabs-pk/data-types-php": "^0.1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "CryptoLabs\\Base58\\": [
+        "src"
+      ]
+    }
+  },
+  "minimum-stability": "dev"
+}
