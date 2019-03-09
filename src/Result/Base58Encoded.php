@@ -22,4 +22,23 @@ use CryptoLabs\DataTypes\Buffer\AbstractStringType;
  */
 class Base58Encoded extends AbstractStringType
 {
+    /**
+     * Base58Encoded constructor.
+     * @param string $encoded
+     * @param string|null $charset
+     */
+    public function __construct(string $encoded, ?string $charset = null)
+    {
+        if (!$encoded) {
+            throw new \InvalidArgumentException('Base58Encoded objects cannot be constructed without data');
+        }
+
+        if ($charset) {
+            if (!preg_match('/^[' . preg_quote($charset, '/') . ']+$/', $encoded)) {
+                throw new \InvalidArgumentException('Encoded string does not match given Base58 charset');
+            }
+        }
+
+        parent::__construct($encoded);
+    }
 }
