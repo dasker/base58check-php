@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CryptoLabs\Base58;
 
 use CryptoLabs\Base58\Result\Base58Encoded;
+use CryptoLabs\BcMath\BcBaseConvert;
 use CryptoLabs\BcMath\BcNumber;
 
 /**
@@ -23,36 +24,52 @@ use CryptoLabs\BcMath\BcNumber;
  */
 class Base58
 {
-    private const CHARSET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+    public const CHARSET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
     /**
-     * @param BcNumber $number
+     * @param string|null $charset
+     * @return string
+     */
+    private static function Charset(?string $charset = null): string
+    {
+        $charset = $charset ?? self::CHARSET;
+        if (strlen($charset) !== 58) {
+            throw new \LengthException('Base58 charsets must have exactly 58 digits');
+        }
+
+        return $charset;
+    }
+
+    /**
+     * @param BcNumber $decs
+     * @param string|null $charset
      * @return Base58Encoded
      */
-    public static function Encode(BcNumber $number): Base58Encoded
+    public static function Encode(BcNumber $decs, ?string $charset = null): Base58Encoded
     {
-        $charset = self::CHARSET;
-        $num = $number->value();
-        $encoded = "";
+        $base58 = BcBaseConvert::fromBase10($decs, self::Charset($charset));
+        $base58Encoded = new Base58Encoded($base58);
+        $base58Encoded->readOnly(true); // Set to read-only
+        return $base58Encoded;
+    }
 
-        while (true) {
-            if (bccomp($num, "58") === -1) {
-                break;
-            }
+    /**
+     * @param Base58Encoded $encoded
+     * @param string|null $charset
+     * @return BcNumber
+     */
+    public static function Decode(Base58Encoded $encoded, ?string $charset = null): BcNumber
+    {
+        return BcBaseConvert::toBase10($encoded->get(), self::Charset($charset));
+    }
 
-            $div = bcdiv($num, "58");
-            $mod = bcmod($num, "58");
-            $char = $charset{intval($mod)};
-            $encoded = $char . $encoded;
-            $num = $div;
-        }
-
-        $nums[] = $num;
-
-        if ($num >= 0) {
-            $encoded = $charset{intval($num)} . $encoded;
-        }
-
-        return new Base58Encoded($encoded);
+    /**
+     * @param string $encoded
+     * @param string|null $charset
+     * @return BcNumber
+     */
+    public static function DecodeFromString(string $encoded, ?string $charset = null): BcNumber
+    {
+        return self::Decode(new Base58Encoded($encoded), self::Charset($charset));
     }
 }
