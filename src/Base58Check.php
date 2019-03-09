@@ -10,7 +10,7 @@
  * https://github.com/cryptolabs-pk/base58check-php/blob/master/LICENSE
  */
 
-declare(strict_typest=1);
+declare(strict_types=1);
 
 namespace CryptoLabs\Base58;
 
