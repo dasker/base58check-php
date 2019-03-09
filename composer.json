@@ -16,7 +16,7 @@
     "php-64bit": "^7.2",
     "ext-openssl": "*",
     "ext-bcmath": "*",
-    "cryptolabs-pk/bcmath-php": "^0.1.2",
+    "cryptolabs-pk/bcmath-php": "^0.1.3",
     "cryptolabs-pk/data-types-php": "^0.1.1"
   },
   "autoload": {
