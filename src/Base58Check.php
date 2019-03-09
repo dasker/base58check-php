@@ -101,7 +101,7 @@ class Base58Check
         $leadingZeros = strlen($hexits) - strlen(ltrim($hexits, "0"));
         $leadingZeros = intval($leadingZeros / 2);
 
-        $hex2dec = BcBaseConvert::toBase10($hexits, BcBaseConvert::CHARSET_BASE16, false);
+        $hex2dec = BcBaseConvert::toBase10($buffer->hexits(false), BcBaseConvert::CHARSET_BASE16, false);
         $base58Charset = $this->charset ?? Base58::CHARSET;
         $base58Encoded = BcBaseConvert::fromBase10($hex2dec, $base58Charset);
         if ($leadingZeros) {
